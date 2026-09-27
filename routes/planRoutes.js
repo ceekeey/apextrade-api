@@ -10,11 +10,9 @@ import { protect } from "../middleware/protect.js";
 
 const router = express.Router();
 
-// Public routes (or you can protect all if plans are strictly private)
-router.get("/allplans", allPlan);
-router.get("/plan/:id", singlePlan);
-
 // Protected routes (Require login)
+router.get("/allplans", protect, allPlan);
+router.get("/plan/:id", protect, singlePlan);
 router.post("/create", protect, createPlan);
 router.put("/update/:id", protect, editPlan);
 router.delete("/delete/:id", protect, deletePlan);
