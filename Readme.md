@@ -1,7 +1,8 @@
 <div align="center">
 
 # 📈 ApexTrade — Trading Journal API
-### *The Backend Engine for Disciplined Traders & Performance Analysts*
+
+### _The Backend Engine for Disciplined Traders & Performance Analysts_
 
 [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-green?style=for-the-badge&logo=nodedotjs)](https://nodejs.org/)
 [![Express.js](https://img.shields.io/badge/Express.js-4.x-black?style=for-the-badge&logo=express)](https://expressjs.com/)
@@ -9,7 +10,7 @@
 [![JWT Auth](https://img.shields.io/badge/JWT-Secure-orange?style=for-the-badge&logo=jsonwebtokens)](https://jwt.io/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-*A robust, lightning-fast, and secure RESTful backend crafted to track trading plans, organize daily journals, link trades to strategies, and analyze performance metrics.*
+_A robust, lightning-fast, and secure RESTful backend crafted to track trading plans, organize daily journals, link trades to strategies, and analyze performance metrics._
 
 </div>
 
@@ -17,22 +18,22 @@
 
 ## ⚡ Core Architecture & Highlights
 
-* **🛡️ Bulletproof Authentication:** Implements token-based security via **JWT**, stored and verified securely against unauthorized access.
-* **📋 Dynamic Trading Plans:** Allows traders to establish, update, and validate custom rule sets and attach strategy screenshots (Base64).
-* **📈 Smart Trade Journaling & Plan Linking:** Seamlessly log execution metrics (PnL, entry/exit prices, lot sizes, emotional states) and reference specific trading plans to evaluate strategy performance.
-* **📊 Automated Performance Analytics:** Instantly calculates aggregate metrics like net PnL, win rates, and winning/losing trade counts on journal fetch requests.
-* **🔒 Route Guarding Middleware:** Strict authorization layers ensuring that sensitive actions (`POST`, `PUT`, `DELETE`) are limited to verified owners.
+- **🛡️ Bulletproof Authentication:** Implements token-based security via **JWT**, stored and verified securely against unauthorized access.
+- **📋 Dynamic Trading Plans:** Allows traders to establish, update, and validate custom rule sets and attach strategy screenshots (Base64).
+- **📈 Smart Trade Journaling & Plan Linking:** Seamlessly log execution metrics (PnL, entry/exit prices, lot sizes, emotional states) and reference specific trading plans to evaluate strategy performance.
+- **📊 Automated Performance Analytics:** Instantly calculates aggregate metrics like net PnL, win rates, and winning/losing trade counts on journal fetch requests.
+- **🔒 Route Guarding Middleware:** Strict authorization layers ensuring that sensitive actions (`POST`, `PUT`, `DELETE`) are limited to verified owners.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology | Purpose |
-| :--- | :--- | :--- |
-| **Runtime** | `Node.js` | JavaScript runtime environment |
-| **Framework** | `Express.js` | REST API routing and middleware management |
-| **Database** | `MongoDB & Mongoose` | NoSQL document storage with strict data modeling and population support |
-| **Security** | `Bcrypt.js` & `JWT` | Cryptographic password hashing and session tokens |
+| Layer         | Technology           | Purpose                                                                 |
+| :------------ | :------------------- | :---------------------------------------------------------------------- |
+| **Runtime**   | `Node.js`            | JavaScript runtime environment                                          |
+| **Framework** | `Express.js`         | REST API routing and middleware management                              |
+| **Database**  | `MongoDB & Mongoose` | NoSQL document storage with strict data modeling and population support |
+| **Security**  | `Bcrypt.js` & `JWT`  | Cryptographic password hashing and session tokens                       |
 
 ---
 
@@ -57,3 +58,4 @@
  ┣ 📜 .env                    # Environment variables (git-ignored)
  ┣ 📜 server.js               # Application entry point & database connection
  ┗ 📜 package.json            # Project dependencies & scripts
+```
