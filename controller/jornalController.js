@@ -16,7 +16,10 @@ export const createJornal = async (req, res) => {
       emotion,
       notes,
       date,
-      plan, // 👈 Added plan ID from frontend request
+      plan,
+      highTimeFrameImage,
+      mediumTimeFrameImage,
+      lowTimeFrameImage,
     } = req.body;
 
     if (
@@ -36,7 +39,7 @@ export const createJornal = async (req, res) => {
 
     const newJornal = await Jornal.create({
       user: req.user._id,
-      plan: plan || null, // 👈 Save selected plan if provided
+      plan: plan || null,
       asset,
       type,
       pnl,
@@ -46,10 +49,15 @@ export const createJornal = async (req, res) => {
       setup,
       emotion,
       notes,
+      highTimeFrameImage: highTimeFrameImage || { data: null, mimeType: null },
+      mediumTimeFrameImage: mediumTimeFrameImage || {
+        data: null,
+        mimeType: null,
+      },
+      lowTimeFrameImage: lowTimeFrameImage || { data: null, mimeType: null },
       date: date || Date.now(),
     });
 
-    // Populate plan details before returning response so frontend can display plan name immediately
     const populatedJornal = await Jornal.findById(newJornal._id).populate(
       "plan",
       "name description",
@@ -75,7 +83,7 @@ export const createJornal = async (req, res) => {
 export const allJornal = async (req, res) => {
   try {
     const journals = await Jornal.find({ user: req.user._id })
-      .populate("plan", "name description") // 👈 Populates linked plan details automatically
+      .populate("plan", "name description")
       .sort({ date: -1 });
 
     const totalPnl = journals.reduce((acc, curr) => acc + curr.pnl, 0);

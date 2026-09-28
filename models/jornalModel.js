@@ -9,8 +9,8 @@ const jornalSchema = new mongoose.Schema(
     },
     plan: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Plan", // References your trading plan model
-      required: false, // Set to true if a plan must always be attached
+      ref: "Plan",
+      required: false,
     },
     asset: {
       type: String,
@@ -54,6 +54,19 @@ const jornalSchema = new mongoose.Schema(
     notes: {
       type: String,
       trim: true,
+    },
+    // 📊 Multi-Timeframe Chart Images
+    highTimeFrameImage: {
+      data: { type: String, default: null },
+      mimeType: { type: String, default: null },
+    },
+    mediumTimeFrameImage: {
+      data: { type: String, default: null },
+      mimeType: { type: String, default: null },
+    },
+    lowTimeFrameImage: {
+      data: { type: String, default: null },
+      mimeType: { type: String, default: null },
     },
     date: {
       type: Date,
