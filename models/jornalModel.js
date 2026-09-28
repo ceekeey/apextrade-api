@@ -48,7 +48,19 @@ const jornalSchema = new mongoose.Schema(
     },
     emotion: {
       type: String,
-      enum: ["CONFIDENT", "FOMO", "REVENGE", "DISCIPLINED", "ANXIOUS", "CALM"],
+        enum: [
+    "FOCUSED",
+    "CONFIDENT",
+    "DISCIPLINED",
+    "CALM",
+    "ANXIOUS",
+    "FEARFUL",
+    "GREEDY",
+    "FRUSTRATED",
+    "IMPULSIVE",
+    "FOMO",
+    "REVENGE",
+  ],
       default: "CALM",
     },
     notes: {
