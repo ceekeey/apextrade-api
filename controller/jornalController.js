@@ -49,12 +49,22 @@ export const createJornal = async (req, res) => {
       setup,
       emotion,
       notes,
-      highTimeFrameImage: highTimeFrameImage || { data: null, mimeType: null },
+
+      highTimeFrameImage: highTimeFrameImage || {
+        data: null,
+        mimeType: null,
+      },
+
       mediumTimeFrameImage: mediumTimeFrameImage || {
         data: null,
         mimeType: null,
       },
-      lowTimeFrameImage: lowTimeFrameImage || { data: null, mimeType: null },
+
+      lowTimeFrameImage: lowTimeFrameImage || {
+        data: null,
+        mimeType: null,
+      },
+
       date: date || Date.now(),
     });
 
@@ -70,6 +80,7 @@ export const createJornal = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating journal:", error);
+
     return res.status(500).json({
       success: false,
       message: "Failed to create journal entry. Try again later.",
@@ -82,15 +93,31 @@ export const createJornal = async (req, res) => {
 // @access  Private
 export const allJornal = async (req, res) => {
   try {
-    const journals = await Jornal.find({ user: req.user._id })
+    const journals = await Jornal.find({
+      user: req.user._id,
+    })
       .populate("plan", "name description")
       .sort({ date: -1 });
 
-    const totalPnl = journals.reduce((acc, curr) => acc + curr.pnl, 0);
+    const totalPnl = journals.reduce(
+      (acc, curr) => acc + Number(curr.pnl || 0),
+      0,
+    );
+
     const totalTrades = journals.length;
-    const winningTrades = journals.filter((j) => j.pnl > 0).length;
+
+    const winningTrades = journals.filter(
+      (journal) => Number(journal.pnl || 0) > 0,
+    ).length;
+
+    const losingTrades = journals.filter(
+      (journal) => Number(journal.pnl || 0) < 0,
+    ).length;
+
     const winRate =
-      totalTrades > 0 ? ((winningTrades / totalTrades) * 100).toFixed(2) : 0;
+      totalTrades > 0
+        ? ((winningTrades / totalTrades) * 100).toFixed(2)
+        : "0.00";
 
     return res.status(200).json({
       success: true,
@@ -99,12 +126,13 @@ export const allJornal = async (req, res) => {
         totalPnl,
         winRate: `${winRate}%`,
         winningTrades,
-        losingTrades: totalTrades - winningTrades,
+        losingTrades,
       },
       data: journals,
     });
   } catch (error) {
     console.error("Error fetching journals:", error);
+
     return res.status(500).json({
       success: false,
       message: "Failed to fetch journal entries. Try again later.",
@@ -118,6 +146,7 @@ export const allJornal = async (req, res) => {
 export const singleJornal = async (req, res) => {
   try {
     const { id } = req.params;
+
     const jornal = await Jornal.findOne({
       _id: id,
       user: req.user._id,
@@ -136,6 +165,7 @@ export const singleJornal = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching single journal:", error);
+
     return res.status(500).json({
       success: false,
       message: "Failed to fetch journal entry. Try again later.",
@@ -144,7 +174,7 @@ export const singleJornal = async (req, res) => {
 };
 
 // @desc    Delete journal entry
-// @route   DELETE /api/jornal/delete/:id (or POST with id in body)
+// @route   DELETE /api/jornal/delete/:id
 // @access  Private
 export const deleteJornal = async (req, res) => {
   try {
@@ -168,6 +198,7 @@ export const deleteJornal = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting journal:", error);
+
     return res.status(500).json({
       success: false,
       message: "Failed to delete journal entry. Try again later.",
@@ -181,9 +212,11 @@ export const deleteJornal = async (req, res) => {
 export const updateJornal = async (req, res) => {
   try {
     const id = req.params.id || req.body.id;
-    const updates = req.body;
 
-    let jornal = await Jornal.findOne({ _id: id, user: req.user._id });
+    const jornal = await Jornal.findOne({
+      _id: id,
+      user: req.user._id,
+    });
 
     if (!jornal) {
       return res.status(404).json({
@@ -192,18 +225,33 @@ export const updateJornal = async (req, res) => {
       });
     }
 
-    jornal = await Jornal.findByIdAndUpdate(id, updates, {
-      new: true,
-      runValidators: true,
-    }).populate("plan", "name description");
+    const updates = {
+      ...req.body,
+    };
+
+    // Prevent changing ownership through req.body
+    delete updates.user;
+
+    const updatedJornal = await Jornal.findOneAndUpdate(
+      {
+        _id: id,
+        user: req.user._id,
+      },
+      updates,
+      {
+        new: true,
+        runValidators: true,
+      },
+    ).populate("plan", "name description");
 
     return res.status(200).json({
       success: true,
       message: "Journal entry updated successfully.",
-      data: jornal,
+      data: updatedJornal,
     });
   } catch (error) {
     console.error("Error updating journal:", error);
+
     return res.status(500).json({
       success: false,
       message: "Failed to update journal entry. Try again later.",
