@@ -9,6 +9,7 @@ import authRoutes from "./routes/authRoutes.js";
 import planRoutes from "./routes/planRoutes.js";
 import jornalRoute from "./routes/jornalRoute.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json({ limit: "10mb" })); // Limit payload size for base64 images
+app.use("/upload", express.static("upload"));
 
 // 🌍 Public API Status / Welcome Route
 app.get("/", (req, res) => {
@@ -34,6 +36,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/plans", planRoutes);
 app.use("/api/jornal", jornalRoute);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/user", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 
